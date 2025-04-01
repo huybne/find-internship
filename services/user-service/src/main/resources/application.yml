@@ -1,0 +1,4 @@
+spring:
+  config: optional:configserver:http://localhost:8887
+  application:
+    name: user-service

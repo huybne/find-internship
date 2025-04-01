@@ -1,0 +1,87 @@
+<mapper namespace="com.internship.user_service.mapper.UserMapper">
+
+    <!-- Map đầy đủ User + Set<Role> -->
+    <resultMap id="UserResultMap" type="com.internship.user_service.model.User">
+        <id property="id" column="id"/>
+        <result property="fullName" column="full_name"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <result property="password" column="password"/>
+        <result property="dob" column="dob"/>
+        <result property="address" column="address"/>
+        <result property="isActive" column="is_active"/>
+        <collection property="roles" ofType="com.internship.user_service.model.Role">
+            <id property="id" column="role_id"/>
+            <result property="roleName" column="role_name"/>
+            <result property="description" column="description"/>
+        </collection>
+        <collection property="CVs" ofType="com.internship.user_service.model.CV">
+            <id property="id" column="cv_id"/>
+            <result property="userId" column="user_id"/>
+            <result property="titleCV" column="title_cv"/>
+            <result property="CVDetail" column="cv_detail"/>
+            <result property="target_job" column="target_job"/>
+            <result property="university" column="university"/>
+            <result property="experience" column="experience"/>
+            <result property="Status" column="status"/>
+            <result property="createdAt" column="cv_created_at"/>
+            <result property="updatedAt" column="cv_updated_at"/>
+        </collection>
+    </resultMap>
+
+    <!-- Lấy user kèm role -->
+    <select id="findById" resultMap="UserWithRolesMap">
+        SELECT
+        u.id AS user_id,
+        u.full_name,
+        u.email,
+        u.phone,
+        u.password,
+        u.dob,
+        u.address,
+        u.is_active,
+        r.id AS role_id,
+        r.role_name,
+        r.description
+        FROM users u
+        LEFT JOIN user_roles ur ON u.id = ur.user_id
+        LEFT JOIN roles r ON ur.role_id = r.id
+        WHERE u.id = #{id}
+    </select>
+
+    <!-- Thêm mới user -->
+    <insert id="insert">
+        INSERT INTO users (id, full_name, email, phone, password, dob, address, is_active)
+        VALUES (#{id}, #{fullName}, #{email}, #{phone}, #{password}, #{dob}, #{address}, #{isActive})
+    </insert>
+
+    <!-- Cập nhật user -->
+    <update id="update">
+        UPDATE users
+        SET full_name = #{fullName},
+        email = #{email},
+        phone = #{phone},
+        password = #{password},
+        dob = #{dob},
+        address = #{address},
+        is_active = #{isActive}
+        WHERE id = #{id}
+    </update>
+
+    <!-- Xóa user -->
+    <delete id="delete">
+        DELETE FROM users WHERE id = #{id}
+    </delete>
+
+    <!-- Gán role cho user -->
+    <insert id="assignRoleToUser">
+        INSERT INTO user_roles (user_id, role_id)
+        VALUES (#{userId}, #{roleId})
+    </insert>
+
+    <!-- Xóa tất cả role của 1 user (nếu cần reset) -->
+    <delete id="deleteRolesByUserId">
+        DELETE FROM user_roles WHERE user_id = #{userId}
+    </delete>
+
+</mapper>

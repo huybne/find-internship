@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # MariaDB Service
+  mariadb:
+    image: mariadb:latest
+    container_name: maria-db
+    environment:
+      MYSQL_ROOT_PASSWORD: fred
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - microservice-net
+
+  # MongoDB Service
+  mongo:
+    image: mongo:4.4
+    container_name: mongo-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: huybui
+      MONGO_INITDB_ROOT_PASSWORD: huybui
+      MONGO_INITDB_DATABASE: internship
+    ports:
+      - "27016:27016"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - microservice-net
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 10s
+
+  # Mongo-Express Service
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo_express
+    environment:
+      ME_CONFIG_MONGODB_URL: "mongodb://huybui:huybui@mongo-db:27016/admin"
+    depends_on:
+      - mongo
+    networks:
+      - microservice-net
+
+networks:
+  microservice-net:
+    driver: bridge
+
+volumes:
+  mariadb-data:
+  mongo-data:

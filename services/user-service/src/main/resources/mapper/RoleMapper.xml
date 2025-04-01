@@ -1,0 +1,31 @@
+<mapper namespace="com.internship.user_service.mapper.RoleMapper">
+
+    <!-- Lấy danh sách tất cả các role -->
+    <select id="findAll" resultType="com.internship.user_service.model.Role">
+        SELECT id, role_name, description FROM roles
+    </select>
+
+    <!-- Tìm role theo id -->
+    <select id="findById" resultType="com.internship.user_service.model.Role">
+        SELECT id, role_name, description FROM roles WHERE id = #{id}
+    </select>
+
+    <!-- Thêm mới role -->
+    <insert id="insert">
+        INSERT INTO roles (id, role_name, description)
+        VALUES (#{id}, #{roleName}, #{description})
+    </insert>
+
+    <!-- Cập nhật role -->
+    <update id="update">
+        UPDATE roles
+        SET role_name = #{roleName}, description = #{description}
+        WHERE id = #{id}
+    </update>
+
+    <!-- Xóa role -->
+    <delete id="delete">
+        DELETE FROM roles WHERE id = #{id}
+    </delete>
+
+</mapper>
