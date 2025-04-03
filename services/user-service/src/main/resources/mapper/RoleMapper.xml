@@ -11,10 +11,11 @@
     </select>
 
     <!-- Thêm mới role -->
-    <insert id="insert">
-        INSERT INTO roles (id, role_name, description)
-        VALUES (#{id}, #{roleName}, #{description})
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO roles (role_name, description)
+        VALUES (#{roleName}, #{description})
     </insert>
+
 
     <!-- Cập nhật role -->
     <update id="update">

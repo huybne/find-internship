@@ -3,14 +3,13 @@ version: '3.8'
 services:
   # MariaDB Service
   mariadb:
-    image: mariadb:latest
+    image: mariadb:10.7
     container_name: maria-db
     environment:
       MYSQL_ROOT_PASSWORD: fred
     ports:
       - "3306:3306"
     volumes:
-      - mariadb-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - microservice-net
@@ -24,7 +23,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: huybui
       MONGO_INITDB_DATABASE: internship
     ports:
-      - "27016:27016"
+      - "27016:27017"
     volumes:
       - mongo-data:/data/db
     networks:

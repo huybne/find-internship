@@ -1,4 +1,16 @@
 spring:
-  config: optional:configserver:http://localhost:8887
+  config:
+    import: optional:configserver:http://localhost:8887
   application:
     name: user-service
+  mybatis:
+    mapper-locations: classpath:mapper/*.xml
+    type-aliases-package: com.internship.user_service.model
+    configuration:
+      map-underscore-to-camel-case: true
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  logging:
+    level:
+      org.mybatis: DEBUG
+      org.apache.ibatis: DEBUG
+

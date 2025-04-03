@@ -1,3 +1,5 @@
+USE user_service_db;
+
 CREATE TABLE users (
                        id UUID PRIMARY KEY DEFAULT UUID(),
                        full_name VARCHAR(255) NOT NULL,
@@ -10,8 +12,9 @@ CREATE TABLE users (
                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
 CREATE TABLE roles (
-                       id VARCHAR(50) PRIMARY KEY, -- Có thể dùng UUID nếu muốn
+                       id VARCHAR(50) PRIMARY KEY,
                        role_name VARCHAR(100) NOT NULL UNIQUE,
                        description TEXT
 );
@@ -28,7 +31,7 @@ CREATE TABLE cvs (
                      id UUID PRIMARY KEY DEFAULT UUID(),
                      user_id UUID NOT NULL,
                      title_cv VARCHAR(255) NOT NULL,
-                     cv_detail TEXT, -- Hoặc BLOB nếu bạn lưu file PDF
+                     cv_detail TEXT,
                      target_job VARCHAR(255),
                      university VARCHAR(255),
                      experience TEXT,
